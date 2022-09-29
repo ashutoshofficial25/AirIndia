@@ -1,18 +1,34 @@
 const express = require("express");
 const { connect } = require("./src/config/database");
 const apiRouter = require("./src/routes/index");
+const authRouter = require("./src/routes/authRoutes");
+const bodyParser = require("body-parser");
+const passport = require("passport");
 const morgan = require("morgan");
+require("./src/utils/auth");
 const app = express();
 
 app.use(morgan("dev"));
-app.use("/api", apiRouter);
+app.use(bodyParser.urlencoded({ extended: false }));
 
-app.get("/", (req, res) => {
-  res.status(200).json({
-    message: "success",
-    data: { name: "Ashutosh" },
-  });
-});
+app.use("/", authRouter);
+app.use("/api", passport.authenticate("jwt", { session: false }), apiRouter);
+
+// app.get("/", (req, res) => {
+//   res.status(200).json({
+//     message: "success",
+//     data: { name: "Ashutosh" },
+//   });
+// });
+
+// app.use(function (err, req, res, next) {
+//   res.status(err.status || 500);
+//   res.json({
+//     success: false,
+//     message: err,
+//   });
+//   next();
+// });
 
 const PORT = 5000;
 
