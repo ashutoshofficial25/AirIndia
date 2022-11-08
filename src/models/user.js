@@ -16,13 +16,11 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-userSchema.pre("save", async (next) => {
-  const user = this;
-  const hash = await bcrypt(this.password, 12);
+userSchema.pre("save", async function (next) {
+  const saltRounds = await bcrypt.genSalt(10);
+  const hash = await bcrypt.hash(this.password, saltRounds);
   this.password = hash;
-  next();
 });
-
 userSchema.method.isValidPassword = async (password) => {
   const user = this;
   const compare = await bcrypt.compare(password, this.password);

@@ -11,24 +11,8 @@ const app = express();
 app.use(morgan("dev"));
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use("/", authRouter);
+app.use("/auth", authRouter);
 app.use("/api", passport.authenticate("jwt", { session: false }), apiRouter);
-
-// app.get("/", (req, res) => {
-//   res.status(200).json({
-//     message: "success",
-//     data: { name: "Ashutosh" },
-//   });
-// });
-
-// app.use(function (err, req, res, next) {
-//   res.status(err.status || 500);
-//   res.json({
-//     success: false,
-//     message: err,
-//   });
-//   next();
-// });
 
 const PORT = 5000;
 

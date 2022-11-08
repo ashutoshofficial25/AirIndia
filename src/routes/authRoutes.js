@@ -6,12 +6,16 @@ const router = express.Router();
 
 router.post(
   "/signup",
-  passport.authenticate("signup", { session: false }),
+  passport.authenticate("signup", {
+    session: false,
+  }),
   async (req, res) => {
-    res.status(200).json({
+    res.status(201).json({
       success: true,
-      message: "Signup successfull",
-      data: req.user,
+      message: "Success",
+      data: {
+        user: req.user,
+      },
     });
   }
 );
